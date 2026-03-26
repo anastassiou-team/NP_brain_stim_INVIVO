@@ -2,15 +2,10 @@
 
 Code and data to reproduce the figures in:
 
-> Irene Rembado, Soo Yeun Lee, Lydia C. Marks, Leslie D. Claar, Areg Peltekian, 
-Christof Koch and Costas A. Anastassiou
-<img width="468" height="58" alt="image" src="https://github.com/user-attachments/assets/237e628c-5a12-4c5e-8987-8f8a882452c4" />
- (2026).
-> *[Selective gating of neural modulation through frequency- and behavior-dependent modes 
-during cortical electrical stimulation
-<img width="468" height="35" alt="image" src="https://github.com/user-attachments/assets/af667be0-0b5d-4fa8-887b-57bc255e074c" />
-]*.
-> *Journal Name*, DOI: [link]
+Irene Rembado, Soo Yeun Lee, Lydia C. Marks, Leslie D. Claar, Areg Peltekian, 
+Christof Koch and Costas A. Anastassiou (2026) "Selective gating of neural modulation through frequency- and behavior-dependent modes 
+during cortical electrical stimulation" (under review)
+
 
 ## Figures
 
