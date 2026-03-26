@@ -9,13 +9,16 @@ during cortical electrical stimulation" (under review)
 
 ## Figures
 
-| Figure | Script | Description |
-|--------|--------|-------------|
-| Fig. 2 | `scripts/fig2_entrainment.py` | Entrainment across brain areas |
-| Fig. 3 (clustering) | `scripts/fig3_clustering.py` | Unit clustering analysis |
-| Fig. 3 (waveform) | `scripts/fig3_waveform.py` | Waveform-based cluster characterisation |
-| Fig. S4 | `scripts/figS4_mmr_entrainment.py` | MMR entrainment |
-| Fig. S (VL-MMR) | `scripts/figS_vl_mmr_corr.py` | Vector-length vs MMR correlation |
+Pre-generated composite figures are included in `figures/`.
+To regenerate any panel, run the corresponding script from the repo root.
+
+| Figure | Script | Output |
+|--------|--------|--------|
+| Fig. 2 | `python scripts/fig2_entrainment.py` | `figures/figure2_complete.png` |
+| Fig. 3, row 1 | `python scripts/fig3_clustering.py` | `figures/figure3_clustering_NEW_LAYOUT.png` |
+| Fig. 3, rows 2-3 | `python scripts/fig3_waveform.py` | `figures/figure3_complete_analysis.png` |
+| Fig. S4 | `python scripts/figS4_mmr_entrainment.py` | `figures/fig2_mmr/figure2_mmr_complete.png` |
+| Fig. S (VL-MMR) | `python scripts/figS_vl_mmr_corr.py` | `figures/fig2_vl_vs_mmr/` |
 
 ## Installation
 
