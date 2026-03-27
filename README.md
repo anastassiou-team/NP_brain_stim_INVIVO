@@ -1,6 +1,8 @@
 # Sinusoidal electrical stimulation effects across the entire brain
 
-![banner](figures/banner1.png)
+<p align="center">
+  <img src="figures/banner1.png" width="100%" alt="Brain-wide effects of sinusoidal electrical stimulation">
+</p>
 
 ## Overview
 
