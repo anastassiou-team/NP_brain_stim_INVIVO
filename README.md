@@ -1,5 +1,7 @@
 # Sinusoidal electrical stimulation effects across the entire brain
 
+![banner](figures/banner.png)
+
 ## Overview
 
 This repository contains the data and analysis code to reproduce all main and supplementary figures in the study below. Using Neuropixels recordings across ~53 brain areas in behaving mice, the study characterizes two distinct, frequency-dependent modes of brain-wide neural modulation during sinusoidal electrical stimulation (sES): (1) sustained spike–phase entrainment governed by anatomical connectivity, and (2) spatially localized, transient spike-rate modulation that preferentially recruits fast-spiking interneurons. These two modes show opposite behavioral dependencies.
@@ -104,7 +106,7 @@ Detailed column-by-column data dictionaries are in [`data/README.md`](data/READM
 
 ## Contact
 
-Costas A. Anastassiou — [Anastassiou Lab](https://www.cedars-sinai.edu/research/labs/anastassiou.html), Cedars-Sinai Medical Center
+Costas A. Anastassiou — [Anastassiou Lab](https://anastassioulab.org), Cedars-Sinai Medical Center & California Institute of Technology
 
 ## License
 
