@@ -46,8 +46,6 @@ AREA_NAME_MAPPING = {
     'visp': 'VISp',
     'mop': 'MOp',
     'mos': 'MOs',
-    'ss_ctx': 'SSp-tr',
-    'anterior_cingulate': 'SSp-tr'
 }
 
 def get_display_name(internal_name):

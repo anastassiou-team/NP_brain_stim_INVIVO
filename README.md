@@ -104,8 +104,8 @@ All statistical tests are implemented in `src/statistics.py`. The analyses use:
 
 Detailed column-by-column data dictionaries are in [`data/README.md`](data/README.md).
 
-- **Unit-level CSVs** (`data/units/`): one file per frequency × amplitude × brain area combination, containing VL, MMR, spike counts, firing rates, waveform features, and distances for every recorded unit.
-- **Transient data** (`data/unified_data_transient.csv`): firing-rate summary statistics in multiple time windows, transient onset/offset, and cell-type classification for Figure 4.
+- **Unit-level CSVs** (`data/units/`): one file per frequency × amplitude × brain area combination, covering 29 gray-matter regions that met minimum unit-count thresholds for the published analyses. Contains VL, MMR, spike counts, firing rates, waveform features, and distances for every recorded unit.
+- **Transient data** (`data/unified_data_transient.csv`): firing-rate summary statistics in multiple time windows, transient onset/offset, and cell-type classification for Figure 4. Retains all recorded units across the full ~53-area recording coverage (45 parent gray-matter areas) before any unit-count filtering.
 - **Connectivity matrices** (`data/connectivity/`): Allen Mouse Brain Atlas structural connectivity, used for regression analyses of entrainment strength vs anatomical connection weight.
 
 ## Contact

@@ -1,5 +1,11 @@
 # Data dictionary
 
+## Recording scope
+
+The full recording coverage in this study spanned ~53 brain areas across 14 mice. This repository contains the subset of areas (29 gray-matter regions for Figures 2–3; 27 areas for Figure 4) that passed quality filters (waveform error < 0.1) and minimum unit-count thresholds (≥ 8 units per condition) required for statistical analysis. Areas below these thresholds are not included in the per-area unit CSVs or figure scripts. The transient dataset (`unified_data_transient.csv`) retains all recorded units across 45 parent gray-matter areas using layer-specific Allen Brain Atlas labels, before any unit-count filtering.
+
+---
+
 ## units/
 
 One CSV per combination of stimulation frequency, amplitude, and brain area.
@@ -7,7 +13,7 @@ One CSV per combination of stimulation frequency, amplitude, and brain area.
 **Naming:** `units_{frequency}Hz_{amplitude}_{brain_area}.csv`
 - Frequencies: 8, 28, 140 Hz
 - Amplitudes: 1, 5 µA
-- Brain areas: 34 regions (CA1, VISp, MOp, ACAd, SUB, DG, CL, etc.)
+- Brain areas: 29 gray-matter regions used in the published analyses. An additional 5 files (2 white matter tracts, 1 aggregate, 2 duplicate mappings) are retained for completeness; see [`EXCLUDED_AREAS.md`](units/EXCLUDED_AREAS.md).
 
 An additional file, `naming_convention.csv`, maps internal brain-area labels to display names used in the figures.
 
