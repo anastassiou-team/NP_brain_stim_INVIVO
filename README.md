@@ -92,13 +92,13 @@ Output PNGs are written to `figures/`.
 
 ## Statistical methods
 
-All statistical tests are implemented in `src/statistics.py`. The analyses use:
+Statistical tests are implemented in `src/statistics.py` and `src/analysis_transient.py`. The analyses use:
 
 - **One-sample t-tests on paired differences** (`scipy.stats.ttest_1samp`) for within-unit pre vs stim comparisons (Figures 2, 4b).
 - **Mann–Whitney U tests** (`scipy.stats.mannwhitneyu`) for unpaired comparisons between cell types and across frequency conditions (Figures 4d, 4e).
 - **Benjamini–Hochberg FDR correction** (`statsmodels.stats.multitest.multipletests`, method `fdr_bh`) applied across brain areas or distance bins within each figure panel.
 - **OLS interaction tests** (`statsmodels.formula.api.ols`, `y ~ x * group`) for comparing spatial decay slopes between FS and RS populations (Figure 4e).
-- **K-means clustering with silhouette-score optimization** for identifying response subgroups (Figure 3).
+- **K-means clustering with silhouette-score optimization** (`sklearn.cluster.KMeans`) for identifying response subgroups (Figure 3), implemented in `scripts/fig3_clustering.py`.
 
 ## Data
 

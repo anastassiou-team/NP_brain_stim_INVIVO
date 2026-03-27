@@ -6,23 +6,21 @@ Three rows (one per frequency: 8, 28, 140 Hz), each showing paired
 pre → stim lines for every unit, with median trend lines and
 FDR-corrected significance dots.
 
-NOTE: The significance dots use Mann-Whitney U tests (matching the
-original analysis code).  The figure legend in the manuscript refers to
-"paired t-test on within-unit firing rate differences" — verify and
-reconcile before submission.
+Uses one-sample t-test on paired within-unit firing-rate differences
+(stim − pre), consistent with Figures 2–3 and the manuscript methods.
 """
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import mannwhitneyu
 
 from config.paths import FIGURES_OUTPUT
 from config.experiments import FREQUENCIES, FIGURE4_AREAS
 from config.plotting import FREQUENCY_COLORS, apply_nature_style, remove_top_right_spines
 from src.data_loading_transient import load_transient_data, select_units, get_fr_columns
-from src.statistics import fdr_correct, get_significance_level
+from src.analysis_transient import analyze_all_areas_transient
+from src.statistics import get_significance_level
 
 
 def main():
@@ -42,22 +40,17 @@ def main():
         ax = axes[f]
         color = FREQUENCY_COLORS[freq]
 
-        clus_ = 0
-        all_pvalues = []
+        # Paired t-test + FDR correction across all areas
+        results = analyze_all_areas_transient(
+            df, freq, amplitude, areas, eval_window)
 
+        clus_ = 0
         for a, area in enumerate(areas):
             mask = select_units(df, freq, amplitude, area=area)
             sub = df.loc[mask]
 
             fr_pre = sub[pre_col].values
             fr_stim = sub[stim_col].values
-
-            # Mann-Whitney U test
-            if len(fr_pre) > 0 and len(fr_stim) > 0:
-                _, pval = mannwhitneyu(fr_pre, fr_stim)
-            else:
-                pval = np.nan
-            all_pvalues.append(pval)
 
             # Background bar
             ax.bar(clus_ + 1, ymax, width=2.6, color='lightgrey', alpha=0.1)
@@ -79,6 +72,16 @@ def main():
                     [np.median(fr_pre), np.median(fr_stim)],
                     color=color, linewidth=2)
 
+            # Significance dots (FDR-corrected paired t-test)
+            if area in results:
+                pval = results[area]['pval_corrected']
+                n_dots = get_significance_level(pval)
+                if n_dots > 0:
+                    offsets = {1: 0.75, 2: 0.5, 3: 0.1, 4: -0.3}
+                    x_off = offsets.get(n_dots, 0)
+                    ax.text(clus_ + x_off, ymax - 10,
+                            '●' * n_dots, color=color)
+
             ax.set_ylabel('spike rate / Hz', multialignment='center',
                           size=16, fontweight='normal', fontname='Arial')
             ax.set_xticks([])
@@ -89,20 +92,6 @@ def main():
             ax.set_xlim([-2, len(areas) * 3 + 2])
             ax.set_ylim([0, ymax])
             remove_top_right_spines(ax)
-            clus_ += 3
-
-        # FDR-corrected significance dots
-        corrected = fdr_correct(all_pvalues)
-        clus_ = 0
-        dot = '●'
-        for a, area in enumerate(areas):
-            n_dots = get_significance_level(corrected[a])
-            if n_dots > 0:
-                # Position adjustment matches original code
-                offsets = {1: 0.75, 2: 0.5, 3: 0.1, 4: -0.3}
-                x_off = offsets.get(n_dots, 0)
-                ax.text(clus_ + x_off, ymax - 10,
-                        dot * n_dots, color=color)
             clus_ += 3
 
     plt.tight_layout()

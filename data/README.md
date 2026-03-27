@@ -80,7 +80,7 @@ One CSV per brain area, containing only waveform-derived features and cluster as
 
 All units across all frequency/amplitude conditions merged into a single table (29 262 rows). Used by the clustering and VL-vs-MMR analyses.
 
-This file shares many columns with the per-area unit CSVs but is not an exact superset: it omits firing-rate columns (`Fspikes_*`), `universal_ID`, and `cluster`, and adds condition identifiers, Rayleigh-test p-values, spatial metadata, and additional waveform features.
+This file shares many columns with the per-area unit CSVs but is not an exact superset: it omits firing-rate columns (`Fspikes_*`), `universal_ID`, and `cluster`, and adds condition identifiers, Rayleigh-test p-values, spatial metadata, and additional waveform features. The table below lists all columns grouped logically; the column order in the actual CSV file may differ.
 
 | Column | Units | Description |
 |--------|-------|-------------|
@@ -154,7 +154,7 @@ Units are classified as fast-spiking (FS, waveform duration ≤ 0.4 ms) or regul
 | meanFR_stimOn_last_1s | Hz | Mean firing rate during last 1 s of stimulation |
 | area_peak_ch | — | Brain-area label at peak channel (layer-specific, e.g., `VISp4`, `CA1`) |
 | depth_peak_ch | µm | Recording depth of peak channel |
-| error_waveform | 0–1 | Spike-sorting waveform error; units with error ≥ 0.1 are excluded |
+| error_waveform | 0–1 | Spike-sorting waveform error; units with error > 0.1 are excluded |
 | area_stim_tip | — | Brain area at stimulation electrode tip |
 | distance_peakch_stim_tip | mm | Distance from peak recording channel to stimulation electrode tip |
 

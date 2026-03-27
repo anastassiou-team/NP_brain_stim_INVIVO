@@ -12,7 +12,8 @@ DATA_PATH = os.path.join(BASE_DIR, 'data', 'units')
 WF_FEATURES_PATH = os.path.join(BASE_DIR, 'data', 'waveform_features')
 CONNECTIVITY_PATH = os.path.join(BASE_DIR, 'data', 'connectivity')
 
-# Transient data
+# Unified datasets
+UNIFIED_VL_PATH = os.path.join(BASE_DIR, 'data', 'unified_data_VL_angle_MMR.csv')
 TRANSIENT_DATA_PATH = os.path.join(BASE_DIR, 'data', 'unified_data_transient.csv')
 
 # Output paths

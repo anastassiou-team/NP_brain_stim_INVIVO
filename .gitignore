@@ -3,6 +3,5 @@ __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 *.pkl
-!figures/.gitkeep
-!figures/figure2_complete.png
-!figures/figure3_unified_complete.png
+.venv/
+.env

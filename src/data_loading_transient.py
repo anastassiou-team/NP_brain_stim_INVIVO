@@ -37,7 +37,7 @@ def load_transient_data(force_reload=False):
     df['freq'] = df['stim_freq'].map(FREQ_STR_TO_INT)
 
     # Quality filters
-    df['filter_quality'] = df['error_waveform'] < error_threshold
+    df['filter_quality'] = df['error_waveform'] <= error_threshold
     df['filter_min_fr'] = df['meanFR_pre_10s'] > MIN_FR_THRESHOLD
 
     # Cell type
