@@ -16,6 +16,11 @@ SCRIPTS = [
     ("Figure 3  – row 1 (scatter + bubble)",  "scripts/figure3_row1.py"),
     ("Figure 3  – row 2 (frequency bars)",    "scripts/figure3_row2.py"),
     ("Figure 3  – row 3 (waveform bars)",     "scripts/figure3_row3.py"),
+    ("Figure 4a – transient duration",    "scripts/fig4_duration.py"),
+    ("Figure 4b – brain-wide FR",         "scripts/fig4_brain_wide_fr.py"),
+    ("Figure 4c – waveform histogram",    "scripts/fig4_waveform_hist.py"),
+    ("Figure 4d – cell-type percentages", "scripts/fig4_cell_type_percent.py"),
+    ("Figure 4e – z-score vs distance",   "scripts/fig4_zscore_distance.py"),
     ("Figure S4 – MMR entrainment",       "scripts/figS4_mmr_entrainment.py"),
     ("Figure S  – VL vs MMR correlation", "scripts/figS_vl_mmr_corr.py"),
 ]

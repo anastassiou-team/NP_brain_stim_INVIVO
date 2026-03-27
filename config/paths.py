@@ -12,6 +12,9 @@ DATA_PATH = os.path.join(BASE_DIR, 'data', 'units')
 WF_FEATURES_PATH = os.path.join(BASE_DIR, 'data', 'waveform_features')
 CONNECTIVITY_PATH = os.path.join(BASE_DIR, 'data', 'connectivity')
 
+# Transient data
+TRANSIENT_DATA_PATH = os.path.join(BASE_DIR, 'data', 'unified_data_transient.csv')
+
 # Output paths
 FIGURES_OUTPUT = os.path.join(BASE_DIR, 'figures')
 

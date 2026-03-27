@@ -44,3 +44,30 @@ cty_colors_ = ['#9932CC', '#228B22', '#CD5C5C', '#4169E1', '#FFD700', '#8B008B']
 # Quality thresholds
 n_spike_thresh = 51
 error_threshold = 0.1
+
+# ── Cell-type classification ──────────────────────────────────────────────
+FS_THRESHOLD = 0.4          # ms – waveform duration cutoff (<=  FS, > RS)
+MIN_FR_THRESHOLD = 0.5      # Hz – minimum baseline firing rate for transient analyses
+
+CELL_TYPE_COLORS = {
+    'FS': 'blue',
+    'RS': 'red',
+}
+
+# ── Frequency string ↔ numeric mapping ───────────────────────────────────
+FREQ_STR_TO_INT = {
+    'sine_8Hz': 8,
+    'sine_28Hz': 28,
+    'sine_140Hz': 140,
+}
+FREQ_INT_TO_STR = {v: k for k, v in FREQ_STR_TO_INT.items()}
+
+# ── Figure 4 parameters ──────────────────────────────────────────────────
+FIGURE4_AREAS = [
+    'VISam', 'VISpm', 'VISp', 'VISa', 'CA1', 'ProS', 'SUB',
+    'DG-mo', 'DG-sg', 'DG-po', 'NOT', 'MOp', 'RSPv', 'APN',
+    'SSp', 'LP', 'RSPd', 'MB', 'MOs', 'RSPagl', 'ACAd',
+    'CL', 'CA3', 'CP', 'MD', 'AV', 'AMd',
+]
+
+FIGURE4_DISTANCE_BINS = [0, 1, 2, 3, 4]  # mm

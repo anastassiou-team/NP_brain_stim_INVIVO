@@ -203,3 +203,86 @@ def get_significance_level(pval):
         return 3
     else:  # pval <= 0.0001
         return 4
+
+
+def fdr_correct(pvalues, alpha=0.05, method='fdr_bh'):
+    """
+    Apply Benjamini-Hochberg FDR correction to an array of p-values.
+
+    Parameters
+    ----------
+    pvalues : array-like
+        Raw p-values (NaN entries are passed through unchanged).
+    alpha : float
+        Family-wise error rate.
+    method : str
+        Correction method (default 'fdr_bh').
+
+    Returns
+    -------
+    np.ndarray
+        Corrected p-values (same length as input; NaN where input was NaN).
+    """
+    from statsmodels.stats.multitest import multipletests
+
+    pvalues = np.asarray(pvalues, dtype=float)
+    corrected = np.full_like(pvalues, np.nan)
+    valid = ~np.isnan(pvalues)
+    if valid.sum() == 0:
+        return corrected
+    _, corrected[valid], _, _ = multipletests(pvalues[valid], alpha=alpha, method=method)
+    return corrected
+
+
+def pval_to_stars(pval):
+    """
+    Convert a p-value to an asterisk string for annotation.
+
+    Returns None if not significant (p >= 0.05).
+    """
+    if np.isnan(pval) or pval >= 0.05:
+        return None
+    if pval < 0.0001:
+        return '****'
+    if pval < 0.001:
+        return '***'
+    if pval < 0.01:
+        return '**'
+    return '*'
+
+
+def ols_interaction_test(x, y, group_labels):
+    """
+    Test whether two groups have different slopes via OLS interaction term.
+
+    Fits  y ~ x * group  and returns the p-value on the interaction term.
+
+    Parameters
+    ----------
+    x : array-like
+        Continuous predictor (e.g. distance).
+    y : array-like
+        Response variable.
+    group_labels : array-like
+        Group labels (e.g. 'FS' / 'RS').
+
+    Returns
+    -------
+    dict
+        Contains: interaction_pval, model_summary (str), coefficients (dict).
+    """
+    import statsmodels.formula.api as smf
+    import pandas as pd
+
+    df = pd.DataFrame({'x': x, 'y': y, 'group': group_labels})
+    model = smf.ols('y ~ x * group', data=df).fit()
+
+    # Find the interaction term (statsmodels names it e.g. 'x:group[T.RS]')
+    interaction_keys = [k for k in model.pvalues.index if ':' in k]
+    interaction_pval = model.pvalues[interaction_keys[0]] if interaction_keys else np.nan
+
+    return {
+        'interaction_pval': interaction_pval,
+        'coefficients': dict(model.params),
+        'model_summary': str(model.summary()),
+    }
