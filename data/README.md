@@ -7,7 +7,9 @@ One CSV per combination of stimulation frequency, amplitude, and brain area.
 **Naming:** `units_{frequency}Hz_{amplitude}_{brain_area}.csv`
 - Frequencies: 8, 28, 140 Hz
 - Amplitudes: 1, 5 µA
-- Brain areas: ~30 regions (CA1, VISp, MOp, ACAd, SUB, etc.)
+- Brain areas: 34 regions (CA1, VISp, MOp, ACAd, SUB, DG, CL, etc.)
+
+An additional file, `naming_convention.csv`, maps internal brain-area labels to display names used in the figures.
 
 | Column | Units | Description |
 |--------|-------|-------------|
@@ -38,7 +40,7 @@ One CSV per combination of stimulation frequency, amplitude, and brain area.
 | waveform_halfwidth | ms | Trough-to-half-repolarisation duration |
 | waveform_duration | ms | Total action-potential duration |
 | waveform_REP | 0–1 | Repolarisation slope ratio |
-| cluster | 0 or 1 | Waveform-based cell-type cluster assignment |
+| cluster | int ≥ 0 | K-means cluster assignment; the number of clusters per area is determined by silhouette-score optimisation and can exceed 2 (see Figure 3) |
 
 ### Key metrics
 
@@ -50,13 +52,13 @@ One CSV per combination of stimulation frequency, amplitude, and brain area.
 
 ## waveform_features/
 
-One CSV per brain area, containing only waveform-derived features and cluster assignments.
+One CSV per brain area, containing only waveform-derived features and cluster assignments. In addition to the 34 individual brain areas, the directory includes 6 aggregated-region files that pool units across related areas: `hippo` (all hippocampus), `hippo_CA_only`, `hippo_DG_only`, `mops` (MOp + MOs), `rsp` (all retrosplenial), and `vis` (all visual cortex).
 
 **Naming:** `{brain_area}_wf_features_only.csv`
 
 | Column | Units | Description |
 |--------|-------|-------------|
-| cluster | 0 or 1 | Cell-type cluster from k-means on waveform features |
+| cluster | int ≥ 0 | K-means cluster assignment (number of clusters determined by silhouette-score optimisation) |
 | mouse | — | Mouse identifier |
 | probe_position | — | `close` or `far` |
 | unitID | — | Unit identifier |
@@ -72,19 +74,46 @@ One CSV per brain area, containing only waveform-derived features and cluster as
 
 All units across all frequency/amplitude conditions merged into a single table (29 262 rows). Used by the clustering and VL-vs-MMR analyses.
 
-Includes all columns from the per-area unit files plus:
+This file shares many columns with the per-area unit CSVs but is not an exact superset: it omits firing-rate columns (`Fspikes_*`), `universal_ID`, and `cluster`, and adds condition identifiers, Rayleigh-test p-values, spatial metadata, and additional waveform features.
 
 | Column | Units | Description |
 |--------|-------|-------------|
+| mouse | — | Mouse identifier |
+| probe_position | — | `close` or `far` relative to stimulation electrode |
 | stim_current | µA | Stimulation amplitude (1 or 5) |
 | stim_freq | — | Stimulus label, e.g. `sine_8Hz` |
+| unitID | — | Unit identifier within session |
+| waveform_duration | ms | Total action-potential duration |
+| waveform_halfwidth | ms | Trough-to-half-repolarisation duration |
+| waveform_rep_slope | — | Repolarisation slope |
+| waveform_REP | 0–1 | Repolarisation slope ratio |
+| waveform_amplitude | µV | Peak-to-trough EAP amplitude |
+| waveform_velocity_above | — | Waveform velocity, above threshold |
+| waveform_velocity_below | — | Waveform velocity, below threshold |
+| VL_pre | 0–1 | Vector length, baseline |
+| VL_stimOn | 0–1 | Vector length, stimulation |
+| VL_post | 0–1 | Vector length, recovery |
+| MMR_Pre | 0–1 | Modulation magnitude ratio, baseline |
+| MMR_stimOn | 0–1 | Modulation magnitude ratio, stimulation |
+| MMR_Post | 0–1 | Modulation magnitude ratio, recovery |
+| angle_pre_ch15 | rad | Mean preferred phase angle, baseline |
+| angle_stimOn_ch15 | rad | Mean preferred phase angle, stimulation |
+| angle_post_ch15 | rad | Mean preferred phase angle, recovery |
+| Nspikes_pre | count | Spike count, baseline |
+| Nspikes_StimOn | count | Spike count, stimulation |
+| Nspikes_post | count | Spike count, recovery |
+| inst_amp_pre_peak_ch | µV | Peak EAP amplitude, baseline |
+| inst_amp_StimOn_peak_ch | µV | Peak EAP amplitude, stimulation |
+| inst_amp_post_peak_ch | µV | Peak EAP amplitude, recovery |
 | pvalue_ch15_pre | — | Rayleigh-test p-value for phase concentration, baseline |
 | pvalue_ch15_stimOn | — | Rayleigh-test p-value, stimulation |
 | pvalue_ch15_post | — | Rayleigh-test p-value, recovery |
 | peak_ch | — | Recording channel with maximum spike amplitude |
 | area_peak_ch | — | Brain-area label at peak channel |
 | depth_peak_ch | µm | Recording depth of peak channel |
+| error_waveform | 0–1 | Spike-sorting waveform error; units with error > 0.1 are excluded |
 | area_stim_tip | — | Brain area at stimulation electrode tip |
+| distance_peakch_stim_tip | mm | Distance from peak recording channel to stimulation electrode tip |
 
 ---
 
