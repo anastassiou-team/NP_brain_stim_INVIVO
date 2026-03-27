@@ -1047,31 +1047,3 @@ def mm_to_inch(mm):
     """Convert millimeters to inches"""
     return mm / 25.4
 
-# Main execution
-if __name__ == '__main__':
-    
-    # Initialize and run complete analysis
-    analyzer = Figure3ExtendedAnalysis()
-    multi_freq_results, waveform_results, figure = analyzer.run_complete_analysis()
-    
-    print("\n" + "="*80)
-    print("COMPLETE ANALYSIS SUMMARY")
-    print("="*80)
-    
-    if multi_freq_results:
-        print(f"Row 2 - Multi-frequency analysis: {len(multi_freq_results)} areas analyzed")
-        for area, results in multi_freq_results.items():
-            freqs = list(results.keys())
-            print(f"  {area}: {len(freqs)} frequencies ({', '.join(freqs)})")
-    
-    if waveform_results:
-        print(f"Row 3 - Waveform analysis: {len(waveform_results)} areas analyzed")
-        for area, results in waveform_results.items():
-            n_features = len(results['waveform_features'])
-            p_val = results['waveform_test_pval']
-            print(f"  {area}: {n_features} features, p={p_val:.3f}")
-    
-    print("\nAnalysis addresses core research questions:")
-    print("1. ✓ Multi-frequency clustering patterns identified")
-    print("2. ✓ Waveform-cluster relationships quantified") 
-    print("3. ✓ Frequency-specific vs consistent clusters characterized")

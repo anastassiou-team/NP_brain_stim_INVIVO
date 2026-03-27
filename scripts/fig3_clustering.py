@@ -958,19 +958,3 @@ class Figure3ClusteringAnalysis:
         # Return all_results and fig (no selected_results needed for new layout)
         return all_results, fig
 
-if __name__ == '__main__':
-    
-    # Initialize and run analysis
-    analyzer = Figure3ClusteringAnalysis()
-    all_results, figure = analyzer.run_analysis()  # ← FIXED: 2 values, not 3
-    
-    print("\n" + "="*80)
-    print("ANALYSIS COMPLETE!")
-    print("="*80)
-    print(f"Total areas analyzed: {len(all_results)}")
-    print(f"Areas with significant clustering: {sum(1 for r in all_results.values() if r['cluster_test_pval'] < 0.05)}")
-
-    print("\nNext steps:")
-    print("1. Extend to multi-frequency analysis (Row 2)")
-    print("2. Add waveform predictor analysis (Row 3)") 
-    print("3. Implement cross-area consistency analysis (Row 4)")
