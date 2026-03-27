@@ -624,7 +624,8 @@ def generate_complete_figure2(save_figures=True):
     
     # Save
     if save_figures:
-        filename = f'{FIGURES_OUTPUT}/figure2_complete.png'
+        os.makedirs(os.path.join(FIGURES_OUTPUT, 'fig2'), exist_ok=True)
+        filename = os.path.join(FIGURES_OUTPUT, 'fig2', 'figure2_complete.png')
         plt.savefig(filename, dpi=600, bbox_inches='tight')
         print(f"\nSaved: {filename}")
     

@@ -380,7 +380,7 @@ def plot_regression_twopanel(hierarchical_results, frequency, axes, show_ylabels
 
 
 # Ensure output directory exists
-os.makedirs(os.path.join(FIGURES_OUTPUT, "fig2_mmr"), exist_ok=True)
+os.makedirs(os.path.join(FIGURES_OUTPUT, "figS4"), exist_ok=True)
 
 def generate_complete_figure2(save_figures=True):
     """
@@ -634,7 +634,7 @@ def generate_complete_figure2(save_figures=True):
     
     # Save
     if save_figures:
-        filename = f'{FIGURES_OUTPUT}/fig2_mmr/figure2_mmr_complete.png'
+        filename = os.path.join(FIGURES_OUTPUT, 'figS4', 'figure2_mmr_complete.png')
         plt.savefig(filename, dpi=600, bbox_inches='tight')
         print(f"\nSaved: {filename}")
     

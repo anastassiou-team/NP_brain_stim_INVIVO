@@ -56,7 +56,8 @@ def main():
         remove_top_right_spines(ax)
 
     plt.tight_layout()
-    out = os.path.join(FIGURES_OUTPUT, 'figure4a_transient_duration.png')
+    os.makedirs(os.path.join(FIGURES_OUTPUT, 'fig4'), exist_ok=True)
+    out = os.path.join(FIGURES_OUTPUT, 'fig4', 'figure4a_transient_duration.png')
     fig.savefig(out, dpi=300, bbox_inches='tight')
     print(f'Saved {out}')
     plt.close(fig)

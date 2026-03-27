@@ -35,7 +35,7 @@ from config.plotting import mm_to_inch, FREQUENCY_COLORS
 from src.plotting_utils import setup_nature_figure, remove_top_right_spines
 
 # Create dedicated output directory
-OUTPUT_DIR = os.path.join(FIGURES_OUTPUT, 'fig2_vl_vs_mmr')
+OUTPUT_DIR = os.path.join(FIGURES_OUTPUT, 'figS_vl_mmr')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 

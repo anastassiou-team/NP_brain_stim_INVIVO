@@ -123,8 +123,9 @@ def main():
 
     fig.text(0.01, 0.94, 'c', fontsize=12, fontweight='bold')
 
+    os.makedirs(os.path.join(FIGURES_OUTPUT, 'fig3'), exist_ok=True)
     for ext in ['pdf', 'png']:
-        out = os.path.join(FIGURES_OUTPUT, f'figure3_row2.{ext}')
+        out = os.path.join(FIGURES_OUTPUT, 'fig3', f'figure3_row2.{ext}')
         fig.savefig(out, dpi=600, bbox_inches='tight')
         print(f'Saved {out}')
 

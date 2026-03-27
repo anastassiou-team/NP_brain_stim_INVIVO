@@ -95,7 +95,8 @@ def main():
             clus_ += 3
 
     plt.tight_layout()
-    out = os.path.join(FIGURES_OUTPUT, 'figure4b_brain_wide_fr.png')
+    os.makedirs(os.path.join(FIGURES_OUTPUT, 'fig4'), exist_ok=True)
+    out = os.path.join(FIGURES_OUTPUT, 'fig4', 'figure4b_brain_wide_fr.png')
     fig.savefig(out, dpi=300, bbox_inches='tight')
     print(f'Saved {out}')
     plt.close(fig)

@@ -49,7 +49,8 @@ def main():
     remove_top_right_spines(plt.gca())
     plt.tight_layout()
 
-    out = os.path.join(FIGURES_OUTPUT, 'figure4c_waveform_histogram.png')
+    os.makedirs(os.path.join(FIGURES_OUTPUT, 'fig4'), exist_ok=True)
+    out = os.path.join(FIGURES_OUTPUT, 'fig4', 'figure4c_waveform_histogram.png')
     fig.savefig(out, dpi=300, bbox_inches='tight')
     print(f'Saved {out}')
     plt.close(fig)

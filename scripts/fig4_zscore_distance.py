@@ -89,7 +89,8 @@ def main():
               f'{stats["ols_interaction_pval"]:.4g}')
 
     plt.tight_layout()
-    out = os.path.join(FIGURES_OUTPUT, 'figure4e_zscore_distance.png')
+    os.makedirs(os.path.join(FIGURES_OUTPUT, 'fig4'), exist_ok=True)
+    out = os.path.join(FIGURES_OUTPUT, 'fig4', 'figure4e_zscore_distance.png')
     fig.savefig(out, dpi=300, bbox_inches='tight')
     print(f'Saved {out}')
     plt.close(fig)

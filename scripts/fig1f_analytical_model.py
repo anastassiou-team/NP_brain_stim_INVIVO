@@ -252,7 +252,8 @@ def main():
                  mm_to_inch(SINGLE_COLUMN_WIDTH)))
     panel_f(ax_f, xx, zz, V_bi, probes, CHANNEL_IDX)
     fig_f.tight_layout()
-    path_f = os.path.join(FIGURES_OUTPUT, 'figure1f_bipolar_model.png')
+    os.makedirs(os.path.join(FIGURES_OUTPUT, 'fig1'), exist_ok=True)
+    path_f = os.path.join(FIGURES_OUTPUT, 'fig1', 'figure1f_bipolar_model.png')
     fig_f.savefig(path_f, dpi=300, bbox_inches='tight')
     fig_f.savefig(path_f.replace('.png', '.pdf'), bbox_inches='tight')
     print(f'Saved {path_f}')
@@ -264,7 +265,7 @@ def main():
                  mm_to_inch(SINGLE_COLUMN_WIDTH)))
     panel_mono_vs_bi(ax_m, ax_b, xx, zz, V_mono, V_bi, probes, CHANNEL_IDX)
     fig1.tight_layout()
-    path1 = os.path.join(FIGURES_OUTPUT, 'figure1_extra_mono_vs_bipolar.png')
+    path1 = os.path.join(FIGURES_OUTPUT, 'fig1', 'figure1_extra_mono_vs_bipolar.png')
     fig1.savefig(path1, dpi=300, bbox_inches='tight')
     print(f'Saved {path1}')
 
@@ -276,7 +277,7 @@ def main():
         sharex=True)
     panel_ve_profiles(axes2, probes, CHANNEL_IDX)
     fig2.tight_layout()
-    path2 = os.path.join(FIGURES_OUTPUT, 'figure1_extra_ve_profiles.png')
+    path2 = os.path.join(FIGURES_OUTPUT, 'fig1', 'figure1_extra_ve_profiles.png')
     fig2.savefig(path2, dpi=300, bbox_inches='tight')
     print(f'Saved {path2}')
 
@@ -287,7 +288,7 @@ def main():
                  mm_to_inch(0.5 * SINGLE_COLUMN_WIDTH)))
     panel_amplitude_vs_distance((ax_am, ax_ab), probes)
     fig3.tight_layout()
-    path3 = os.path.join(FIGURES_OUTPUT, 'figure1_extra_amplitude_distance.png')
+    path3 = os.path.join(FIGURES_OUTPUT, 'fig1', 'figure1_extra_amplitude_distance.png')
     fig3.savefig(path3, dpi=300, bbox_inches='tight')
     print(f'Saved {path3}')
 

@@ -20,10 +20,10 @@ from PIL import Image
 from config.paths import FIGURES_OUTPUT
 
 PANELS = [
-    'figure1f_bipolar_model.png',
-    'figure3_row1.png',
-    'figure4b_brain_wide_fr.png',
-    'figure4e_zscore_distance.png',
+    os.path.join('fig1', 'figure1f_bipolar_model.png'),
+    os.path.join('fig3', 'figure3_row1.png'),
+    os.path.join('fig4', 'figure4b_brain_wide_fr.png'),
+    os.path.join('fig4', 'figure4e_zscore_distance.png'),
 ]
 
 BANNER_HEIGHT = 600          # pixels
