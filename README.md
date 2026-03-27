@@ -1,6 +1,6 @@
 # Sinusoidal electrical stimulation effects across the entire brain
 
-![banner](figures/banner.png)
+![banner](figures/banner1.png)
 
 ## Overview
 
