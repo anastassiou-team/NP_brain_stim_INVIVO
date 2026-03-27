@@ -1,14 +1,19 @@
 # Sinusoidal electrical stimulation effects across the entire brain
 
-Code and data to reproduce the figures in:
+## Overview
 
-Irene Rembado, Soo Yeun Lee, Lydia C. Marks, Leslie D. Claar, Areg Peltekian,
-Christof Koch and Costas A. Anastassiou (2026) "Selective gating of neural modulation through frequency- and behavior-dependent modes
-during cortical electrical stimulation" (under review)
+This repository contains the data and analysis code to reproduce all main and supplementary figures in the study below. Using Neuropixels recordings across ~53 brain areas in behaving mice, the study characterizes two distinct, frequency-dependent modes of brain-wide neural modulation during sinusoidal electrical stimulation (sES): (1) sustained spike–phase entrainment governed by anatomical connectivity, and (2) spatially localized, transient spike-rate modulation that preferentially recruits fast-spiking interneurons. These two modes show opposite behavioral dependencies.
+
+**Citation:**
+
+> Rembado, I., Lee, S.Y., Marks, L.C., Claar, L.D., Peltekian, A.,
+> Koch, C. & Anastassiou, C.A. (2026). Selective gating of neural modulation
+> through frequency- and behavior-dependent modes during cortical electrical
+> stimulation. *Under review.*
 
 ## Figures
 
-Pre-generated composite figures are included in `figures/`.
+Pre-generated figures are included in `figures/`.
 To regenerate any panel, run the corresponding script from the repo root.
 
 | Figure | Description | Script | Output |
@@ -40,6 +45,12 @@ conda env create -f environment.yml
 conda activate neuropixels
 ```
 
+Alternatively, with pip:
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Usage
 
 Run any figure script from the repository root:
@@ -56,6 +67,7 @@ Output PNGs are written to `figures/`.
 ├── README.md
 ├── LICENSE                  MIT
 ├── environment.yml          Conda environment specification
+├── requirements.txt         Pip requirements (alternative to conda)
 ├── run_all.py               Regenerate every figure (with optional filter)
 ├── structures.json          Allen Brain Atlas structure definitions
 ├── manifest.json            Allen Brain Atlas data manifest
@@ -67,15 +79,32 @@ Output PNGs are written to `figures/`.
 │   ├── waveform_features/   Waveform feature CSVs
 │   ├── unified_data_VL_angle_MMR.csv   All units merged (VL, angle, MMR)
 │   ├── unified_data_transient.csv      Transient firing-rate data (Fig. 4)
-│   └── connectivity/        Allen Mouse Brain connectivity matrices
+│   ├── connectivity/        Allen Mouse Brain connectivity matrices
+│   └── README.md            Full data dictionary
 └── figures/                 Generated figures
 ```
 
+## Statistical methods
+
+All statistical tests are implemented in `src/statistics.py`. The analyses use:
+
+- **One-sample t-tests on paired differences** (`scipy.stats.ttest_1samp`) for within-unit pre vs stim comparisons (Figures 2, 4b).
+- **Mann–Whitney U tests** (`scipy.stats.mannwhitneyu`) for unpaired comparisons between cell types and across frequency conditions (Figures 4d, 4e).
+- **Benjamini–Hochberg FDR correction** (`statsmodels.stats.multitest.multipletests`, method `fdr_bh`) applied across brain areas or distance bins within each figure panel.
+- **OLS interaction tests** (`statsmodels.formula.api.ols`, `y ~ x * group`) for comparing spatial decay slopes between FS and RS populations (Figure 4e).
+- **K-means clustering with silhouette-score optimization** for identifying response subgroups (Figure 3).
+
 ## Data
 
-Unit-level CSVs: `units_{frequency}Hz_{amplitude}_{brain_area}.csv`
-Waveform features: `{brain_area}_wf_features_only.csv`
-Unified datasets: `unified_data_VL_angle_MMR.csv`, `unified_data_transient.csv`
+Detailed column-by-column data dictionaries are in [`data/README.md`](data/README.md).
+
+- **Unit-level CSVs** (`data/units/`): one file per frequency × amplitude × brain area combination, containing VL, MMR, spike counts, firing rates, waveform features, and distances for every recorded unit.
+- **Transient data** (`data/unified_data_transient.csv`): firing-rate summary statistics in multiple time windows, transient onset/offset, and cell-type classification for Figure 4.
+- **Connectivity matrices** (`data/connectivity/`): Allen Mouse Brain Atlas structural connectivity, used for regression analyses of entrainment strength vs anatomical connection weight.
+
+## Contact
+
+Costas A. Anastassiou — [Anastassiou Lab](https://www.cedars-sinai.edu/research/labs/anastassiou.html), Cedars-Sinai Medical Center
 
 ## License
 

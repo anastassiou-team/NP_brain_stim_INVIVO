@@ -88,6 +88,49 @@ Includes all columns from the per-area unit files plus:
 
 ---
 
+## unified_data_transient.csv
+
+Transient firing-rate data for Figure 4 (29 262 rows). Each row represents one unit in one stimulation condition. Unlike the per-area unit CSVs, this file uses a long format with `stim_freq` and `stim_current` as columns, and brain-area names are layer-specific (e.g., `ACAd5`, `MOp2/3`, `VISp4`).
+
+Units are classified as fast-spiking (FS, waveform duration ≤ 0.4 ms) or regular-spiking (RS, > 0.4 ms). Transient effects are detected as significant firing-rate deviations in the first 100 ms after stimulation onset.
+
+| Column | Units | Description |
+|--------|-------|-------------|
+| mouse | — | Mouse identifier |
+| probe_position | — | `close` or `far` relative to stimulation electrode |
+| stim_current | µA | Stimulation amplitude (1 or 5) |
+| stim_freq | — | Stimulus label: `sine_8Hz`, `sine_28Hz`, or `sine_140Hz` |
+| unitID | — | Unit identifier within session |
+| peak_ch | — | Recording channel with maximum spike amplitude |
+| waveform_duration | ms | Total action-potential duration (FS ≤ 0.4 ms, RS > 0.4 ms) |
+| waveform_REP | 0–1 | Repolarization slope ratio |
+| transient_type | D / I / NaN | Transient effect classification: D = decrease, I = increase, NaN = no significant transient |
+| transient_onset | s | Onset time of transient effect relative to stimulation start |
+| transient_offset | s | Offset time of transient effect |
+| transient_peak_value | Hz | Peak firing-rate deviation during the transient |
+| meanFR_pre_10s | Hz | Mean firing rate during 10 s pre-stimulation baseline |
+| stdFR_pre_10s | Hz | Std of firing rate during 10 s pre-stimulation baseline |
+| meanFR_pre_1s | Hz | Mean firing rate during 1 s pre-stimulation baseline |
+| stdFR_pre_1s | Hz | Std of firing rate during 1 s pre-stimulation baseline |
+| meanFR_stimOn_10s | Hz | Mean firing rate during full 10 s stimulation epoch |
+| meanFR_stimOn_1s | Hz | Mean firing rate during first 1 s of stimulation |
+| meanFR_stimOn_01s | Hz | Mean firing rate during first 100 ms of stimulation |
+| meanFR_stimOn_last_01s | Hz | Mean firing rate during last 100 ms of stimulation |
+| meanFR_stimOn_last_1s | Hz | Mean firing rate during last 1 s of stimulation |
+| area_peak_ch | — | Brain-area label at peak channel (layer-specific, e.g., `VISp4`, `CA1`) |
+| depth_peak_ch | µm | Recording depth of peak channel |
+| error_waveform | 0–1 | Spike-sorting waveform error; units with error ≥ 0.1 are excluded |
+| area_stim_tip | — | Brain area at stimulation electrode tip |
+| distance_peakch_stim_tip | mm | Distance from peak recording channel to stimulation electrode tip |
+
+### Key derived quantities
+
+- **Z-scored firing rate** (Figure 4e): `(meanFR_stimOn_01s − meanFR_pre_1s) / stdFR_pre_1s`, absolute value taken.
+- **Transient duration** (Figure 4a): `transient_offset − transient_onset` for units with non-NaN transient classification.
+- **Minimum baseline FR filter**: units with `meanFR_pre_10s ≤ 0.5 Hz` are excluded from all Figure 4 analyses.
+
+---
+
 ## connectivity/
 
 Allen Mouse Brain Atlas structural connectivity data.
