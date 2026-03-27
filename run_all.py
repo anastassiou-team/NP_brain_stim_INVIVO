@@ -13,8 +13,9 @@ import time
 
 SCRIPTS = [
     ("Figure 2  – entrainment",           "scripts/fig2_entrainment.py"),
-    ("Figure 3  – clustering (row 1)",    "scripts/fig3_clustering.py"),
-    ("Figure 3  – waveform (rows 2-3)",   "scripts/fig3_waveform.py"),
+    ("Figure 3  – row 1 (scatter + bubble)",  "scripts/figure3_row1.py"),
+    ("Figure 3  – row 2 (frequency bars)",    "scripts/figure3_row2.py"),
+    ("Figure 3  – row 3 (waveform bars)",     "scripts/figure3_row3.py"),
     ("Figure S4 – MMR entrainment",       "scripts/figS4_mmr_entrainment.py"),
     ("Figure S  – VL vs MMR correlation", "scripts/figS_vl_mmr_corr.py"),
 ]
