@@ -13,6 +13,7 @@ To regenerate any panel, run the corresponding script from the repo root.
 
 | Figure | Script | Output |
 |--------|--------|--------|
+| Fig. 1f | `python scripts/fig1f_analytical_model.py` | `figures/figure1f_bipolar_model.png` |
 | Fig. 2 | `python scripts/fig2_entrainment.py` | `figures/figure2_complete.png` |
 | Fig. 3, row 1 | `python scripts/figure3_row1.py` | `figures/figure3_row1.png` |
 | Fig. 3, row 2 | `python scripts/figure3_row2.py` | `figures/figure3_row2.png` |

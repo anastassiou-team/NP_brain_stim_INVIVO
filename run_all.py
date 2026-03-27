@@ -12,6 +12,7 @@ import sys
 import time
 
 SCRIPTS = [
+    ("Figure 1f – analytical model",      "scripts/fig1f_analytical_model.py"),
     ("Figure 2  – entrainment",           "scripts/fig2_entrainment.py"),
     ("Figure 3  – row 1 (scatter + bubble)",  "scripts/figure3_row1.py"),
     ("Figure 3  – row 2 (frequency bars)",    "scripts/figure3_row2.py"),
