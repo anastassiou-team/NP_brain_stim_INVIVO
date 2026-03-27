@@ -591,370 +591,37 @@ class Figure3ClusteringAnalysis:
         print(f"  Areas with significant clustering: {len(significant_areas)}/{len(selected_results)}")
         print(f"  Significant areas: {significant_areas}")
     
-    def create_figure3_row1(self, selected_results, all_results):
-        """Create Figure 3 Row 1 with panels A-D"""
-        
-        if len(selected_results) == 0:
-            print("No results to plot!")
-            return None
-        
-        # Set up figure with wider Panel D
-        setup_nature_figure()
-        fig = plt.figure(figsize=(mm_to_inch(200), mm_to_inch(80)))  # Wider to accommodate Panel D
-        gs = GridSpec(1, 5, hspace=0.3, wspace=0.4, 
-                      width_ratios=[1, 1, 1, 2, 0.1],  # Make Panel D twice as wide
-                      top=0.85, bottom=0.25, left=0.08, right=0.98)  # More bottom space for labels
-        
-        print(f"\nGenerating Figure 3, Row 1...")
-        print(f"Selected areas: {list(selected_results.keys())}")
-        
-        # Panels A, B, C: Top 3 areas by selection criteria
-        panel_labels = ['A', 'B', 'C']
-        areas_list = list(selected_results.keys())[:3]  # Ensure only 3 areas
-        
-        for i, area in enumerate(areas_list):
-            ax = fig.add_subplot(gs[0, i])
-            self._plot_area_clustering(selected_results[area], ax)
-            
-            # Add panel label
-            ax.text(-0.15, 1.05, panel_labels[i], transform=ax.transAxes,
-                   fontsize=12, fontweight='bold')
-        
-        # Panel D: All areas sorted by distance (wider panel)
-        ax_d = fig.add_subplot(gs[0, 3])
-        self._plot_cross_area_comparison(all_results, ax_d)
-        ax_d.text(-0.15, 1.05, 'D', transform=ax_d.transAxes,
-                 fontsize=12, fontweight='bold')
-        
-        return fig
-
-    def create_figure3_new_layout(self, all_results):
-        """Create Figure 3 with NEW LAYOUT - FINAL FIXES: spacing, labels, matched ticks"""
-        
-        # Set up figure with new layout: Panel A (wider) + Panel B
-        setup_nature_figure()
-        fig = plt.figure(figsize=(mm_to_inch(200), mm_to_inch(100)))  # Taller for 2x3 grid
-        
-        # Create GridSpec: Panel A (6 subplots) + Panel B (cross-area comparison) - EQUAL HEIGHTS
-        gs = GridSpec(1, 4, hspace=0.4, wspace=0.3, 
-                    width_ratios=[1, 1, 1, 1.5],  # Panel B slightly wider
-                    top=0.90, bottom=0.15, left=0.08, right=0.95)
-        
-        print(f"\nGenerating Figure 3 with NEW LAYOUT...")
-        
-        # PANEL A: 6 specific areas in 2x3 grid (VISp, CA1, RSPd top; MOp, MOs, CL bottom)
-        target_areas = ['VISp', 'CA1', 'RSPd', 'MOp', 'MOs', 'CL']
-        
-        # Check which target areas we have results for
-        available_areas = []
-        for area in target_areas:
-            if area in all_results:
-                available_areas.append(area)
-            else:
-                print(f"  Warning: {area} not found in results")
-        
-        print(f"Panel A areas: {available_areas}")
-        
-        # Create nested GridSpec for Panel A's 2x3 subplot grid - INCREASED SPACING
-        gs_panel_a = GridSpecFromSubplotSpec(2, 3, subplot_spec=gs[0, :3], 
-                                            hspace=0.5, wspace=0.25)  # Increased hspace from 0.3 to 0.5
-        
-        # Create 6 subplots for Panel A - INDIVIDUAL SCALING (no global limits)
-        positions = [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2)]  # 2 rows, 3 columns
-        
-        for idx, area in enumerate(available_areas[:6]):  # Limit to 6 areas
-            if idx < len(positions):
-                row, col = positions[idx]
-                ax = fig.add_subplot(gs_panel_a[row, col])
-                
-                if area in all_results:
-                    # EACH PLOT GETS ITS OWN SCALING + row info for xlabel
-                    is_top_row = (row == 0)
-                    self._plot_single_area_individual_scaling(all_results[area], ax, is_top_row)
-                    if (idx == 0) or (idx == 3) : ax.set_ylabel('VL sES',fontsize=9)
-                else:
-                    ax.text(0.5, 0.5, f'{area}\n(no data)', ha='center', va='center', fontsize=10)
-        
-        # Add Panel A label
-        fig.text(0.02, 0.95, 'a', fontsize=12, fontweight='bold')
-        
-        # PANEL B: Cross-area comparison - SAME HEIGHT AS PANEL A
-        ax_b = fig.add_subplot(gs[0, 3])  # Single row, last column - SAME HEIGHT
-        self._plot_cross_area_comparison(all_results, ax_b)
-        
-        # Add Panel B label
-        ax_b.text(-0.15, 1.05, 'b', transform=ax_b.transAxes,
-                fontsize=12, fontweight='bold')
-        
-        return fig
-
-    def _plot_single_area_individual_scaling(self, results, ax, is_top_row):
-        """Plot single area with matched ticks and conditional xlabel"""
-        area = results['area']
-        area_data = results['area_data']
-        cluster_labels = results['cluster_labels']
-        n_clusters = results['n_clusters']
-        p_val = results['cluster_test_pval']
-        
-        # Plot with cluster colors
-        vl_pre = area_data['VL_pre']
-        vl_stimon = area_data['VL_stimOn']
-        
-        # Create scatter plot with cluster colors but NO LEGEND
-        colors = [cty_colors_[i % len(cty_colors_)] for i in range(n_clusters)]
-        
-        for cluster_id in np.unique(cluster_labels):
-            mask = cluster_labels == cluster_id
-            ax.scatter(vl_pre[mask], vl_stimon[mask], 
-                    c=[colors[cluster_id]], alpha=0.7, s=12, edgecolors='none')
-        
-        # INDIVIDUAL SCALING: Set limits based on THIS PLOT'S data only
-        vl_pre_vals = vl_pre.values if hasattr(vl_pre, 'values') else vl_pre
-        vl_stimon_vals = vl_stimon.values if hasattr(vl_stimon, 'values') else vl_stimon
-        
-        # Get min and max from this plot's data
-        plot_min = min(np.min(vl_pre_vals), np.min(vl_stimon_vals)) * 0.95
-        plot_max = max(np.max(vl_pre_vals), np.max(vl_stimon_vals)) * 1.05
-        
-        # Set symmetric limits for THIS plot
-        ax.set_xlim(plot_min, plot_max)
-        ax.set_ylim(plot_min, plot_max)
-        
-        # Plot diagonal line
-        ax.plot([plot_min, plot_max], [plot_min, plot_max], 'k--', alpha=0.5, zorder=0, linewidth=1)
-        
-        # MATCHED TICKS: Set same ticks for both axes
-        # Let matplotlib choose reasonable tick locations, then match them
-        ax.locator_params(axis='both', nbins=4)  # Limit to ~4 ticks per axis
-        
-        # Get the automatically chosen y-ticks and apply them to x-axis too
-        yticks = ax.get_yticks()
-        # Filter ticks to be within our plot limits
-        valid_ticks = yticks[(yticks >= plot_min) & (yticks <= plot_max)]
-        
-        if len(valid_ticks) > 0:
-            ax.set_xticks(valid_ticks)
-            ax.set_yticks(valid_ticks)
-        
-        if not is_top_row:  # Only show xlabel on bottom row
-            ax.set_xlabel('VL no stim', fontsize=8)
-        
-        # ax.set_ylabel('VL sES', fontsize=8)
-        
-        # MULTILINE TITLE: Area name on first line, n and p-value on second line
-        title_line1 = f'{area}'
-        title_line2 = f'n={len(area_data)}, p={p_val:.1e}'
-        ax.set_title(f'{title_line1}\n{title_line2}', fontsize=9, ha='center')
-        
-        remove_top_right_spines(ax)
-        ax.tick_params(labelsize=7)
-        
-        # Ensure equal aspect ratio for symmetry
-        ax.set_aspect('equal', adjustable='box')
-    
-    def _plot_area_clustering(self, results, ax):
-        """Plot clustering visualization"""
-        area = results['area']
-        area_data = results['area_data']
-        cluster_labels = results['cluster_labels']
-        n_clusters = results['n_clusters']
-        silhouette = results['silhouette_score']
-        p_val = results['cluster_test_pval']
-        
-        # Plot directly in VL space
-        vl_pre = area_data['VL_pre']
-        vl_stimon = area_data['VL_stimOn']
-        
-        # Create scatter plot with cluster colors but NO LEGEND
-        colors = [cty_colors_[i % len(cty_colors_)] for i in range(n_clusters)]
-        
-        for cluster_id in np.unique(cluster_labels):
-            mask = cluster_labels == cluster_id
-            ax.scatter(vl_pre[mask], vl_stimon[mask], 
-                    c=[colors[cluster_id]], alpha=0.7, s=15, edgecolors='none')
-        
-        # Plot diagonal line (no change)
-        lims = [
-            np.min([ax.get_xlim(), ax.get_ylim()]),
-            np.max([ax.get_xlim(), ax.get_ylim()])
-        ]
-        ax.plot(lims, lims, 'k--', alpha=0.5, zorder=0, linewidth=1)
-        
-        # Formatting - P-VALUE IN TITLE, NO LEGEND
-        ax.set_xlabel('VL Pre-stim', fontsize=9)
-        ax.set_ylabel('VL Stim-on', fontsize=9)
-        ax.set_title(f'{area} (n={len(area_data)}, p={p_val:.1e})', fontsize=9)
-        
-        remove_top_right_spines(ax)
-        ax.tick_params(labelsize=8)
-    
-    def _plot_cross_area_comparison(self, all_results, ax):
-        """Plot cross-area comparison with dual significance thresholds"""
-        from config.plotting import FREQUENCY_COLORS
-
-        target_freq = 28
-        
-        # Get distance information for each area
-        freq, amp = self.target_condition
-        target_data = self.data[
-            (self.data['stim_freq'] == freq) &
-            (self.data['stim_current'] == amp)
-        ]
-        
-        areas = []
-        distances = []
-        p_values = []
-        silhouette_scores = []
-        n_units_list = []
-        
-        for area, results in all_results.items():
-            area_data = target_data[target_data['area_main'] == area]
-            if len(area_data) > 0:
-                areas.append(area)
-                distances.append(area_data['distance_peakch_stim_tip'].mean())
-                p_values.append(results['cluster_test_pval'])
-                silhouette_scores.append(results['silhouette_score'])
-                n_units_list.append(results['n_units'])
-        
-        # Convert to arrays
-        distances = np.array(distances)
-        p_values = np.array(p_values)
-        silhouette_scores = np.array(silhouette_scores)
-        n_units_list = np.array(n_units_list)
-        
-        # Apply FDR correction
-        _, p_values_corrected, _, _ = multipletests(p_values, method='fdr_bh')
-        
-        # Create significance colors - use 0.01 threshold as requested
-        colors = [ FREQUENCY_COLORS[target_freq] if p < 0.01 else 'lightgray' for p in p_values_corrected]
-    
-        # Create scatter plot - bubble size represents number of units
-        scatter = ax.scatter(distances, -np.log10(p_values_corrected), 
-                        c=colors, s=n_units_list/5, alpha=0.7, edgecolors='black', linewidth=0.5)
-        
-        # Add dual significance lines as requested
-        ax.axhline(-np.log10(0.01), color='red', linestyle='--', alpha=0.7, linewidth=1, label='p = 0.01')
-        ax.axhline(-np.log10(0.001), color='red', linestyle='--', alpha=0.7, linewidth=1, label='p = 0.001')
-        
-        # Add area labels for top 8 most significant areas (lowest FDR p-values)
-        sig_indices = np.argsort(p_values_corrected)[:8]
-        
-        for idx in sig_indices:
-            if p_values_corrected[idx] < 0.01:  # Only label areas meeting stricter threshold
-                area = areas[idx]
-                x = distances[idx]
-                y = -np.log10(p_values_corrected[idx])
-                
-                # Add area label with small offset to avoid overlap with point
-                ax.annotate(area, (x, y), xytext=(3, 3), textcoords='offset points',
-                        fontsize=8, ha='left', va='bottom')
-        
-        # Formatting
-        ax.set_xlabel('distance from sES / mm', fontsize=9)
-        ax.set_ylabel('-log10(p-value)', fontsize=9)
-        ax.tick_params(labelsize=8)
-        
-        remove_top_right_spines(ax)
-
-    # Add this function to report aggregated areas after running the analysis
     def report_aggregated_areas(self):
         """Report the complete list of areas after aggregation for verification"""
-        
+
         print("\n" + "="*60)
         print("COMPLETE AREA AGGREGATION REPORT")
         print("="*60)
-        
+
         # Get mapping from original to aggregated
         mapping_data = self.data[['area_peak_ch', 'area_main']].drop_duplicates()
         mapping_data = mapping_data.sort_values('area_main')
-        
+
         # Group by aggregated area
         aggregated_areas = {}
         for _, row in mapping_data.iterrows():
             original = row['area_peak_ch']
             aggregated = row['area_main']
-            
+
             if aggregated not in aggregated_areas:
                 aggregated_areas[aggregated] = []
             aggregated_areas[aggregated].append(original)
-        
+
         # Report aggregation results
         print(f"Total original areas: {len(mapping_data)}")
         print(f"Total aggregated areas: {len(aggregated_areas)}")
         print(f"\nAggregation details:")
-        
+
         for aggregated_area in sorted(aggregated_areas.keys()):
             original_areas = sorted(aggregated_areas[aggregated_area])
-            
+
             if len(original_areas) == 1:
                 print(f"  {aggregated_area}: {original_areas[0]} (no aggregation)")
             else:
                 print(f"  {aggregated_area}: {', '.join(original_areas)} → {aggregated_area}")
-        
-        print(f"\n" + "="*60)
-    '''
-    def run_analysis(self):
-        """Run complete Figure 3 Row 1 analysis with data-driven area selection"""
-        
-        print("="*80)
-        print("FIGURE 3: SWES ENTRAINMENT CLUSTERING ANALYSIS")
-        print("="*80)
-        
-        # Load and filter data
-        self.load_and_filter_data()
-        
-        # Analyze ALL viable areas
-        all_results = self.analyze_all_areas_clustering()
-        
-        # Select top 3 areas based on scientific criteria
-        selected_results = self.select_top_areas(all_results, n_areas=3)
-        
-        # Generate summary statistics for selected areas
-        self.generate_summary_stats(selected_results, len(all_results))
-
-        self.report_aggregated_areas()
-        
-        # Create figure with selected areas in panels A-C and all areas in panel D
-        fig = self.create_figure3_row1(selected_results, all_results)
-        
-        if fig is not None:
-            # Save figure
-            output_path = os.path.join(FIGURES_OUTPUT, 'figure3_clustering_row1_FIXED.png')
-            fig.savefig(output_path, dpi=600, bbox_inches='tight')
-            print(f"\nFigure saved: {output_path}")
-            
-            plt.show()
-        
-        return selected_results, all_results, fig
-    '''
-
-    def run_analysis(self):
-        """Run complete Figure 3 analysis with NEW LAYOUT - FIXED RETURN"""
-        
-        print("="*80)
-        print("FIGURE 3: SWES ENTRAINMENT CLUSTERING ANALYSIS")
-        print("="*80)
-        
-        # Load and filter data
-        self.load_and_filter_data()
-        
-        # Report aggregated areas for verification
-        self.report_aggregated_areas()
-        
-        # Analyze ALL viable areas
-        all_results = self.analyze_all_areas_clustering()
-        
-        # Create figure with NEW LAYOUT
-        fig = self.create_figure3_new_layout(all_results)
-        
-        if fig is not None:
-            # Save figure
-            output_path = os.path.join(FIGURES_OUTPUT, 'figure3_clustering_NEW_LAYOUT.png')
-            fig.savefig(output_path, dpi=600, bbox_inches='tight')
-            print(f"\nFigure saved: {output_path}")
-            
-            plt.show()
-        
-        # Return all_results and fig (no selected_results needed for new layout)
-        return all_results, fig
 

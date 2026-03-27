@@ -669,8 +669,8 @@ def generate_figure_VL_MMR_stage1(save_figures=True):
         area_significance.to_csv(sig_file, index=False)
         print(f"Saved: {sig_file}")
     
-    plt.show()
-    
+    plt.close('all')
+
     print("\n" + "="*80)
     print("STAGE 1 COMPLETE!")
     print("="*80)

@@ -628,8 +628,8 @@ def generate_complete_figure2(save_figures=True):
         plt.savefig(filename, dpi=600, bbox_inches='tight')
         print(f"\nSaved: {filename}")
     
-    plt.show()
-    
+    plt.close('all')
+
     print("\n" + "="*80)
     print("COMPLETE FIGURE 2 GENERATION FINISHED!")
     print("="*80)

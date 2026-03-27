@@ -927,7 +927,7 @@ class Figure3ExtendedAnalysis(Figure3ClusteringAnalysis):
             output_path = os.path.join('figures', 'figure3_complete_analysis.png')
             fig.savefig(output_path, dpi=600, bbox_inches='tight')
             print(f"\nComplete figure saved: {output_path}")
-            plt.show()
+            plt.close('all')
         
         return multi_freq_results, waveform_results, fig
 
