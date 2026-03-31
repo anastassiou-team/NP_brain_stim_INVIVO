@@ -14,7 +14,8 @@ from src.data_loading_transient import select_units, get_fr_columns
 
 # ── Panel 4b helpers ──────────────────────────────────────────────────────
 
-def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms'):
+def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms',
+                          pre_col=None, stim_col=None):
     """
     Paired t-test on within-unit FR difference (stim − pre) for one area.
 
@@ -33,7 +34,8 @@ def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms'):
     if len(sub) == 0:
         return None
 
-    pre_col, stim_col, _ = get_fr_columns(eval_window)
+    if pre_col is None or stim_col is None:
+        pre_col, stim_col, _ = get_fr_columns(eval_window)
     fr_pre = sub[pre_col].values
     fr_stim = sub[stim_col].values
 
@@ -54,7 +56,8 @@ def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms'):
 
 
 def analyze_all_areas_transient(df, freq, amplitude, areas,
-                                eval_window='100ms'):
+                                eval_window='100ms',
+                                pre_col=None, stim_col=None):
     """
     Run :func:`compute_area_fr_stats` for every area, then FDR-correct.
 
@@ -66,7 +69,8 @@ def analyze_all_areas_transient(df, freq, amplitude, areas,
     """
     results = {}
     for area in areas:
-        r = compute_area_fr_stats(df, freq, amplitude, area, eval_window)
+        r = compute_area_fr_stats(df, freq, amplitude, area, eval_window,
+                                  pre_col=pre_col, stim_col=stim_col)
         if r is not None:
             results[area] = r
 

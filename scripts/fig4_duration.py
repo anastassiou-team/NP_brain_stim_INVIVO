@@ -20,7 +20,7 @@ def main():
     df = load_transient_data()
 
     amplitude = 5
-    freqs = FREQUENCIES[::-1]  # 140, 28, 8 – matches original column order
+    freqs = FREQUENCIES  # 8, 28, 140 Hz – left to right
 
     fig, axes = plt.subplots(1, len(freqs), figsize=(10, 5))
 

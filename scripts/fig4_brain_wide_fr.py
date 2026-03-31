@@ -29,7 +29,10 @@ def main():
 
     amplitude = 5
     eval_window = '100ms'
-    pre_col, stim_col, _ = get_fr_columns(eval_window)
+    # Panel 4b uses 10s pre-stim baseline with 100ms stim-on window,
+    # matching the original manuscript code.
+    pre_col = 'meanFR_pre_10s'
+    stim_col = 'meanFR_stimOn_01s'
     freqs = FREQUENCIES  # 8, 28, 140
     areas = FIGURE4_AREAS
     ymax = 230
@@ -42,7 +45,8 @@ def main():
 
         # Paired t-test + FDR correction across all areas
         results = analyze_all_areas_transient(
-            df, freq, amplitude, areas, eval_window)
+            df, freq, amplitude, areas, eval_window,
+            pre_col=pre_col, stim_col=stim_col)
 
         clus_ = 0
         for a, area in enumerate(areas):
