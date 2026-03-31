@@ -35,7 +35,7 @@ To regenerate any panel, run the corresponding script from the repo root.
 | Fig. 4d | Percentage of FS and RS units showing transient firing-rate decreases or increases, compared across frequencies | `python scripts/fig4_cell_type_percent.py` | `figures/fig4/figure4d_cell_type_percent.png` |
 | Fig. 4e | Distance-dependent z-scored firing-rate changes for FS vs RS units at each frequency | `python scripts/fig4_zscore_distance.py` | `figures/fig4/figure4e_zscore_distance.png` |
 | Fig. S4 | Replication of Fig. 2 using mean modulation ratio (MMR) instead of VL as the entrainment metric | `python scripts/figS4_mmr_entrainment.py` | `figures/figS4/figure2_mmr_complete.png` |
-| Fig. S (VL-MMR) | Analysis of VL–MMR discrepancies: when and why MMR exceeds VL, indicating bimodal phase-locking | `python scripts/figS_vl_mmr_corr.py` | `figures/figS_vl_mmr/` |
+
 
 To regenerate all figures at once:
 

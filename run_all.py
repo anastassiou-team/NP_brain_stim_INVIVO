@@ -23,7 +23,6 @@ SCRIPTS = [
     ("Figure 4d – cell-type percentages", "scripts/fig4_cell_type_percent.py"),
     ("Figure 4e – z-score vs distance",   "scripts/fig4_zscore_distance.py"),
     ("Figure S4 – MMR entrainment",       "scripts/figS4_mmr_entrainment.py"),
-    ("Figure S  – VL vs MMR correlation", "scripts/figS_vl_mmr_corr.py"),
 ]
 
 
