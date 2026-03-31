@@ -6,8 +6,12 @@ Three rows (one per frequency: 8, 28, 140 Hz), each showing paired
 pre → stim lines for every unit, with median trend lines and
 FDR-corrected significance dots.
 
-Uses one-sample t-test on paired within-unit firing-rate differences
-(stim − pre), consistent with Figures 2–3 and the manuscript methods.
+Generates two versions:
+  - figure4b_brain_wide_fr_ttest.png  (one-sample t-test on paired diffs)
+  - figure4b_brain_wide_fr_mwu.png    (Mann-Whitney U, unpaired)
+
+Both use the same 10s pre-stim baseline, BH-FDR correction, and
+significance thresholds.
 """
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -18,19 +22,17 @@ import matplotlib.pyplot as plt
 from config.paths import FIGURES_OUTPUT
 from config.experiments import FREQUENCIES, FIGURE4_AREAS
 from config.plotting import FREQUENCY_COLORS, apply_nature_style, remove_top_right_spines
-from src.data_loading_transient import load_transient_data, select_units, get_fr_columns
+from src.data_loading_transient import load_transient_data, select_units
 from src.analysis_transient import analyze_all_areas_transient
 from src.statistics import get_significance_level
 
 
-def main():
+def plot_figure4b(df, test, out_path):
+    """Generate one version of figure 4b with the specified statistical test."""
     apply_nature_style()
-    df = load_transient_data()
 
     amplitude = 5
-    eval_window = '100ms'
-    # Panel 4b uses 10s pre-stim baseline with 100ms stim-on window,
-    # matching the original manuscript code.
+    # 10s pre-stim baseline with 100ms stim-on window
     pre_col = 'meanFR_pre_10s'
     stim_col = 'meanFR_stimOn_01s'
     freqs = FREQUENCIES  # 8, 28, 140
@@ -43,10 +45,10 @@ def main():
         ax = axes[f]
         color = FREQUENCY_COLORS[freq]
 
-        # Paired t-test + FDR correction across all areas
+        # Statistical test + FDR correction across all areas
         results = analyze_all_areas_transient(
-            df, freq, amplitude, areas, eval_window,
-            pre_col=pre_col, stim_col=stim_col)
+            df, freq, amplitude, areas, '100ms',
+            pre_col=pre_col, stim_col=stim_col, test=test)
 
         clus_ = 0
         for a, area in enumerate(areas):
@@ -76,7 +78,7 @@ def main():
                     [np.median(fr_pre), np.median(fr_stim)],
                     color=color, linewidth=2)
 
-            # Significance dots (FDR-corrected paired t-test)
+            # Significance dots (FDR-corrected)
             if area in results:
                 pval = results[area]['pval_corrected']
                 n_dots = get_significance_level(pval)
@@ -99,11 +101,21 @@ def main():
             clus_ += 3
 
     plt.tight_layout()
-    os.makedirs(os.path.join(FIGURES_OUTPUT, 'fig4'), exist_ok=True)
-    out = os.path.join(FIGURES_OUTPUT, 'fig4', 'figure4b_brain_wide_fr.png')
-    fig.savefig(out, dpi=300, bbox_inches='tight')
-    print(f'Saved {out}')
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    fig.savefig(out_path, dpi=300, bbox_inches='tight')
+    print(f'Saved {out_path}')
     plt.close(fig)
+
+
+def main():
+    df = load_transient_data()
+    fig_dir = os.path.join(FIGURES_OUTPUT, 'fig4')
+
+    # Fix random seed so both figures have identical jittered lines
+    for test, suffix in [('ttest', '_ttest'), ('mwu', '_mwu')]:
+        np.random.seed(42)
+        out = os.path.join(fig_dir, f'figure4b_brain_wide_fr{suffix}.png')
+        plot_figure4b(df, test, out)
 
 
 if __name__ == '__main__':

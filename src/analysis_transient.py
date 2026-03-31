@@ -15,9 +15,15 @@ from src.data_loading_transient import select_units, get_fr_columns
 # ── Panel 4b helpers ──────────────────────────────────────────────────────
 
 def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms',
-                          pre_col=None, stim_col=None):
+                          pre_col=None, stim_col=None, test='ttest'):
     """
-    One-sample t-test on within-unit FR difference (stim − pre) for one area.
+    Statistical test on pre vs stim firing rates for one area.
+
+    Parameters
+    ----------
+    test : str
+        'ttest' — one-sample t-test on paired differences (stim − pre).
+        'mwu'   — Mann-Whitney U test (unpaired) on pre vs stim.
 
     Returns
     -------
@@ -37,17 +43,20 @@ def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms',
     fr_pre = sub[pre_col].values
     fr_stim = sub[stim_col].values
 
-    diffs = fr_stim - fr_pre
-    if len(diffs) < 2:
+    if len(fr_pre) < 2:
         return None
 
-    t_stat, pval = ttest_1samp(diffs, 0, alternative='two-sided')
+    if test == 'mwu':
+        _, pval = mannwhitneyu(fr_pre, fr_stim)
+    else:
+        diffs = fr_stim - fr_pre
+        _, pval = ttest_1samp(diffs, 0, alternative='two-sided')
 
     return {
         'fr_pre': fr_pre,
         'fr_stim': fr_stim,
         'pval': pval,
-        'n_units': len(diffs),
+        'n_units': len(fr_pre),
         'median_pre': np.median(fr_pre),
         'median_stim': np.median(fr_stim),
     }
@@ -55,7 +64,7 @@ def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms',
 
 def analyze_all_areas_transient(df, freq, amplitude, areas,
                                 eval_window='100ms',
-                                pre_col=None, stim_col=None):
+                                pre_col=None, stim_col=None, test='ttest'):
     """
     Run :func:`compute_area_fr_stats` for every area, then FDR-correct.
 
@@ -68,7 +77,8 @@ def analyze_all_areas_transient(df, freq, amplitude, areas,
     results = {}
     for area in areas:
         r = compute_area_fr_stats(df, freq, amplitude, area, eval_window,
-                                  pre_col=pre_col, stim_col=stim_col)
+                                  pre_col=pre_col, stim_col=stim_col,
+                                  test=test)
         if r is not None:
             results[area] = r
 
