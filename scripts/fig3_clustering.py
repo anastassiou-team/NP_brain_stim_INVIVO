@@ -1,15 +1,11 @@
 """
-Figure 3: SWES Entrainment Clustering Analysis - FIXED VERSION
-Analyzes whether units within brain areas show distinct clustering patterns in their response to SWES.
-
-FIXES:
-1. Comprehensive area mapping function that properly aggregates layer-specific areas
-2. Proper handling of motor, visual, somatosensory, and other cortical areas
-3. Improved area aggregation that matches enhanced_vl_mmr_analysis.py approach
+Figure 3: SWES Entrainment Clustering Analysis
+Analyzes whether units within brain areas show distinct clustering patterns
+in their response to SWES.
 
 Key Research Question:
-Do units within a brain area respond uniformly to SWES, or do distinct clusters emerge
-with different entrainment properties?
+Do units within a brain area respond uniformly to SWES, or do distinct clusters
+emerge with different entrainment properties?
 """
 
 import sys

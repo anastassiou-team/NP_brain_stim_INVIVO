@@ -22,7 +22,7 @@ from config.paths import FIGURES_OUTPUT
 PANELS = [
     os.path.join('fig1', 'figure1f_bipolar_model.png'),
     os.path.join('fig3', 'figure3_row1.png'),
-    os.path.join('fig4', 'figure4b_brain_wide_fr.png'),
+    os.path.join('fig4', 'figure4b_brain_wide_fr_ttest.png'),
     os.path.join('fig4', 'figure4e_zscore_distance.png'),
 ]
 

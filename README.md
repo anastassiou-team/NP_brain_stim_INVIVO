@@ -30,7 +30,7 @@ To regenerate any panel, run the corresponding script from the repo root.
 | Fig. 3, row 2 | Frequency dependence of clustering: bar charts and heatmap of clustering significance across areas and frequencies | `python scripts/figure3_row2.py` | `figures/fig3/figure3_row2.png` |
 | Fig. 3, row 3 | Waveform–cluster associations: effect sizes for EAP waveform features vs cluster identity across areas | `python scripts/figure3_row3.py` | `figures/fig3/figure3_row3.png` |
 | Fig. 4a | Distribution of transient firing-rate effect durations at each frequency | `python scripts/fig4_duration.py` | `figures/fig4/figure4a_transient_duration.png` |
-| Fig. 4b | Brain-wide firing-rate changes during the first 100 ms of stimulation, paired pre vs stim across areas and frequencies | `python scripts/fig4_brain_wide_fr.py` | `figures/fig4/figure4b_brain_wide_fr.png` |
+| Fig. 4b | Brain-wide firing-rate changes during the first 100 ms of stimulation, paired pre vs stim across areas and frequencies (three stat-test variants: t-test, MWU, Wilcoxon) | `python scripts/fig4_brain_wide_fr.py` | `figures/fig4/figure4b_brain_wide_fr_{ttest,mwu,wilcoxon}.png` |
 | Fig. 4c | Bimodal waveform-duration histogram used to classify units as fast-spiking (FS) or regular-spiking (RS) | `python scripts/fig4_waveform_hist.py` | `figures/fig4/figure4c_waveform_histogram.png` |
 | Fig. 4d | Percentage of FS and RS units showing transient firing-rate decreases or increases, compared across frequencies | `python scripts/fig4_cell_type_percent.py` | `figures/fig4/figure4d_cell_type_percent.png` |
 | Fig. 4e | Distance-dependent z-scored firing-rate changes for FS vs RS units at each frequency | `python scripts/fig4_zscore_distance.py` | `figures/fig4/figure4e_zscore_distance.png` |
