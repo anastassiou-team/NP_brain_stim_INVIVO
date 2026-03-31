@@ -22,8 +22,9 @@ def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms',
     Parameters
     ----------
     test : str
-        'ttest' — one-sample t-test on paired differences (stim − pre).
-        'mwu'   — Mann-Whitney U test (unpaired) on pre vs stim.
+        'ttest'    — one-sample t-test on paired differences (stim − pre).
+        'mwu'      — Mann-Whitney U test (unpaired) on pre vs stim.
+        'wilcoxon' — Wilcoxon signed-rank test on paired differences.
 
     Returns
     -------
@@ -31,7 +32,7 @@ def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms',
         Keys: fr_pre, fr_stim, pval, n_units, median_pre, median_stim.
         None if no units pass filters.
     """
-    from scipy.stats import ttest_1samp
+    from scipy.stats import ttest_1samp, wilcoxon
 
     mask = select_units(df, freq, amplitude, cell_type='all', area=area)
     sub = df.loc[mask]
@@ -48,6 +49,13 @@ def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms',
 
     if test == 'mwu':
         _, pval = mannwhitneyu(fr_pre, fr_stim)
+    elif test == 'wilcoxon':
+        diffs = fr_stim - fr_pre
+        # Wilcoxon requires at least one non-zero difference
+        if np.all(diffs == 0):
+            pval = 1.0
+        else:
+            _, pval = wilcoxon(diffs, alternative='two-sided')
     else:
         diffs = fr_stim - fr_pre
         _, pval = ttest_1samp(diffs, 0, alternative='two-sided')

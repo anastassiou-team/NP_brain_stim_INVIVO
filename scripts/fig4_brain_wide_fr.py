@@ -111,8 +111,8 @@ def main():
     df = load_transient_data()
     fig_dir = os.path.join(FIGURES_OUTPUT, 'fig4')
 
-    # Fix random seed so both figures have identical jittered lines
-    for test, suffix in [('ttest', '_ttest'), ('mwu', '_mwu')]:
+    # Fix random seed so all figures have identical jittered lines
+    for test, suffix in [('ttest', '_ttest'), ('mwu', '_mwu'), ('wilcoxon', '_wilcoxon')]:
         np.random.seed(42)
         out = os.path.join(fig_dir, f'figure4b_brain_wide_fr{suffix}.png')
         plot_figure4b(df, test, out)
