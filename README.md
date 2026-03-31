@@ -94,7 +94,8 @@ Output PNGs are written to `figures/`.
 
 Statistical tests are implemented in `src/statistics.py` and `src/analysis_transient.py`. The analyses use:
 
-- **One-sample t-tests on paired differences** (`scipy.stats.ttest_1samp`) for within-unit pre vs stim comparisons (Figures 2, 4b).
+- **One-sample t-tests on paired differences** (`scipy.stats.ttest_1samp`) for within-unit pre vs stim comparisons (Figure 2).
+- **Figure 4b** compares pre (10 s baseline) vs stim (100 ms window) firing rates across brain areas. Three statistical-test variants are generated for comparison: one-sample t-test on paired differences, Mann–Whitney U (unpaired), and Wilcoxon signed-rank (paired non-parametric).
 - **Mann–Whitney U tests** (`scipy.stats.mannwhitneyu`) for unpaired comparisons between cell types and across frequency conditions (Figures 4d, 4e).
 - **Benjamini–Hochberg FDR correction** (`statsmodels.stats.multitest.multipletests`, method `fdr_bh`) applied across brain areas or distance bins within each figure panel.
 - **OLS interaction tests** (`statsmodels.formula.api.ols`, `y ~ x * group`) for comparing spatial decay slopes between FS and RS populations (Figure 4e).
