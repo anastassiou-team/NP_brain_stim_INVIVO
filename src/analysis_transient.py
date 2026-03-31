@@ -17,9 +17,7 @@ from src.data_loading_transient import select_units, get_fr_columns
 def compute_area_fr_stats(df, freq, amplitude, area, eval_window='100ms',
                           pre_col=None, stim_col=None):
     """
-    Paired t-test on within-unit FR difference (stim − pre) for one area.
-
-    Uses one-sample t-test on paired differences (same as Figures 2/3).
+    One-sample t-test on within-unit FR difference (stim − pre) for one area.
 
     Returns
     -------
