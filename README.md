@@ -15,7 +15,8 @@ This repository contains the data and analysis code to reproduce all main and su
 > Rembado, I., Lee, S.Y., Marks, L.C., Claar, L.D., Peltekian, A.,
 > Koch, C. & Anastassiou, C.A. (2026). Selective gating of neural modulation
 > through frequency- and behavior-dependent modes during cortical electrical
-> stimulation. *Under review.*
+> stimulation. *bioRxiv* (preprint; manuscript under peer review).
+> https://www.biorxiv.org/content/10.64898/2026.08.19.745734v1.abstract
 
 ## Figures
 

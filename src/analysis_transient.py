@@ -224,10 +224,10 @@ def compute_zscore_by_distance(df, freq, amplitude, cell_type,
     abs_z = np.abs(z)
     groups = pd.cut(distances, distance_bins, right=True)
 
-    d_mean = distances.groupby(groups).mean().values
-    z_mean = abs_z.groupby(groups).apply(np.nanmean).values
-    z_std = abs_z.groupby(groups).apply(np.nanstd).values
-    n = abs_z.groupby(groups).count().values
+    d_mean = distances.groupby(groups, observed=False).mean().values
+    z_mean = abs_z.groupby(groups, observed=False).apply(np.nanmean).values
+    z_std = abs_z.groupby(groups, observed=False).apply(np.nanstd).values
+    n = abs_z.groupby(groups, observed=False).count().values
     z_se = z_std / np.sqrt(n)
 
     return {
@@ -297,8 +297,8 @@ def compare_fs_rs_at_bins(df, freq, amplitude, distance_bins,
 
     # OLS interaction test for slope difference
     x_all = np.concatenate([
-        d_fs.groupby(g_fs).transform('mean').values,
-        d_rs.groupby(g_rs).transform('mean').values,
+        d_fs.groupby(g_fs, observed=False).transform('mean').values,
+        d_rs.groupby(g_rs, observed=False).transform('mean').values,
     ])
     # Use raw per-unit distances and z-scores instead
     x_all = np.concatenate([d_fs.values, d_rs.values])
